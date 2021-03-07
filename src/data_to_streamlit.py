@@ -6,7 +6,7 @@ import pandas as pd
 
 
 def carga_data():
-    data = pd.read_csv("../data/cbd_info2.csv")
+    data = pd.read_csv("data/cbd_info2.csv")
     return data
 
 def mood_list():
