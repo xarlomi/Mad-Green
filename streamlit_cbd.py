@@ -17,7 +17,17 @@ st.write("""
 **Tu comparador de precios de CBD en Madrid**
 """)
 
-selected_mood = st.selectbox("¿Cómo te gustaría sentirte hoy 🚀?", mood_list())
+
+st.write("### ¿Cómo te gustaría sentirte hoy 🚀?")
+selected_mood = st.selectbox("Elije tu mood para encontrar tu mejor CBD-compañero", mood_list())
+
+st.write(f"#### Hay {count_cbd_mood(selected_mood)} tipos de CBD que te harán sentirte {selected_mood}")
 
 
-st.write(f"### Hay {count_cbd_mood(selected_mood)} tipos de CBD que te harán sentirte {selected_mood}")
+st.write(f"### Aqui puedes comprar los tipos de CBD que te hacen sentirte {selected_mood}:")
+st.dataframe(shop_mood(selected_mood))
+
+
+
+
+

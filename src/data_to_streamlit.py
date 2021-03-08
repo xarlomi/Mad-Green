@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+# mi .py mongoconnection no se importa! wtf: funcion read_coll y check_exists son de ahi
 
 client = MongoClient()
 db = client.mad_green
@@ -8,6 +9,17 @@ import pandas as pd
 def carga_data():
     data = pd.read_csv("data/cbd_info2.csv")
     return data
+
+def read_coll(collection,query,project, client=client):
+    res = db[collection].find(query,  project)
+    return list(res)
+
+def check_exists(query, collection, *pro):
+    res = read_coll(collection, query, pro)
+    if len(res) > 0:
+        return True
+    else:
+        return False
 
 #Returns a list with all the moods that CBD makes you feel
 def mood_list():
@@ -43,5 +55,7 @@ def shop_mood(moods):
         pro = {"_id":0} 
         if check_exists(q, "cbd_shops"):
             lista_res.append(read_coll("cbd_shops",q,  pro))
+            flat_list = [item for sublist in lista_res for item in sublist]
+            df = pd.DataFrame(flat_list)
+    return df.sort_values(['price'], ascending=[False])
 
-    return lista_res
