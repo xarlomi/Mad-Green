@@ -24,5 +24,5 @@ def mood_list():
     return z
  
 def count_cbd_mood(mood):
-    moods = db.cbd_info.count({"$expr": {"mood": f"{mood}"}})
+    moods = db.cbd_info.count({"mood": {"$regex": f"{mood}"}})
     return moods
