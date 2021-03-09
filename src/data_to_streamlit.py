@@ -21,8 +21,11 @@ def check_exists(query, collection, *pro):
     else:
         return False
 
-#Returns a list with all the moods that CBD makes you feel
+
 def mood_list():
+    """
+    Returns a list with all the moods that CBD makes you feel (col1)
+    """
     dat = carga_data()
     a = dat.Effects.unique()
     b = [i.split(",") for i in a]
@@ -37,13 +40,20 @@ def mood_list():
     return z
 
 
-#This counts how many kind of CBDs exist that will make you feel in function of the choosen moood 
+
 def count_cbd_mood(mood):
+    """
+    Esta funcion cuenta numero de tipos de CBD que te hacen sentir el mood que hayas elegido (col1, q1)
+    """
     moods = db.cbd_info.count({"mood": {"$regex": f"{mood}"}})
     return moods
 
-#This function returns a bud shop in function of the mood desired to feel by user:
+
+
 def shop_mood(moods):
+    """
+    Esta funcion devuelve los productos que puede comprar el usuario (col2, q2) en funcion del mood que haya elegido (col1, q1)
+    """
     filt = {"mood":{"$regex":f"{moods}"}}
     project = {"_id":0, "product":1}
     result = db.cbd_info.find(filt, project)
@@ -61,6 +71,9 @@ def shop_mood(moods):
 
 
 def shop_rating(moods):
+    """
+    Esta funcion toma la funcion de arriba Y: me de los ratings (col3, q3) de los productos que puede comprar el usuario (col2, q2) en funcion del mood que haya elegido (col1, q1)
+    """
     flat_list = shop_mood(moods)
     lista_ratings = []
     for ratings in flat_list:
@@ -70,6 +83,7 @@ def shop_rating(moods):
                     lista_ratings.append( read_coll("cbd_ratings",qu, pro))
                     flat_list2 = [item for sublist in lista_ratings for item in sublist]
                     ratings_df = pd.DataFrame(flat_list2)
+                    rate_df = ratings_df.drop_duplicates(subset="product")
 
-    return ratings_df
+    return rate_df
 
