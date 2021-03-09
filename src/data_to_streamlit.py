@@ -56,6 +56,20 @@ def shop_mood(moods):
         if check_exists(q, "cbd_shops"):
             lista_res.append(read_coll("cbd_shops",q,  pro))
             flat_list = [item for sublist in lista_res for item in sublist]
-            df = pd.DataFrame(flat_list)
-    return df.sort_values(['price'], ascending=[False])
+            
+    return flat_list
+
+
+def shop_rating(moods):
+    flat_list = shop_mood(moods)
+    lista_ratings = []
+    for ratings in flat_list:
+            qu= {"product":ratings["product"]}
+            pro = {"_id":0}
+            if check_exists(qu, "cbd_ratings"):
+                    lista_ratings.append( read_coll("cbd_ratings",qu, pro))
+                    flat_list2 = [item for sublist in lista_ratings for item in sublist]
+                    ratings_df = pd.DataFrame(flat_list2)
+
+    return ratings_df
 
