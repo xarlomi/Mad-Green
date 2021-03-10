@@ -27,18 +27,26 @@ Fíltremos la búsqueda para encontrar tu match ideal: """)
 
 
 st.write(f"### Aqui puedes encontrar dónde comprar {len(shop_mood(selected_mood))}  tipos de CBD que te hacen sentirte {selected_mood}:")
-st.dataframe(shop_mood(selected_mood))
+st.dataframe(merging_shop_rating(selected_mood))
 
 st.write("""### ¿Todavía no sabes con cuál quedarte? 
 **Déjate guiar por nuestros queridos usuarios... 🧙‍♂️:**""")
 agree = st.button("Haz click aquí para ver las opiniones de estos buds")
 if agree:
-    df = shop_rating(selected_mood)
+    df2 = shop_rating(selected_mood)
     fig = px.bar(df, x="product", y="rating", color="product", title=f"Los mejores tipos de CBD para sentirte {selected_mood} según nuestros usuarios:")
     fig.show()  
 
-    
-search_query = st.sidebar.text_input("Search")
+df = merging_shop_rating(selected_mood)    
+makes = list(df['product'].drop_duplicates())
+make_choice = st.sidebar.selectbox('Escoge el CBD  que mas te inspire:', makes)
+
+cbd_per = list(df["CBD percentage"].loc[df["product"] == make_choice])
+cbd_choice = st.sidebar.selectbox('Ahora elige % de CBD:', cbd_per)
+
+prices = list(df["price"].loc[(df["product"] == make_choice) & (df["CBD percentage"]== cbd_choice)])
+price_choice = st.sidebar.selectbox('Ahora por precio:', prices)
+
 
 
 user_review = st.text_input("Añade tu comentario:")

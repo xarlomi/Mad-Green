@@ -2,7 +2,7 @@ from pymongo import MongoClient
 # mi .py mongoconnection no se importa! wtf: funcion read_coll y check_exists son de ahi
 from src.mongoconnection import *
 
-
+import math
 import pandas as pd
 
 
@@ -59,6 +59,24 @@ def shop_mood(moods):
             
     return flat_list
 
+def mood_description(moods):
+    """
+    This queries one collection to another and returns a DF with the 
+    available CBD product given the mood chosen by user
+    """
+    flat_list = shop_mood(moods)
+    lista_description = []
+    for shops in flat_list:
+        qu = {"product":shops["product"]}
+        pro = {"_id": 0, "product":1, "description":1}
+        if check_exists(qu, "cbd_info"):
+                    lista_description.append( read_coll("cbd_info",qu, pro))
+                    flat_list2 = [item for sublist in lista_description for item in sublist]
+                    df = pd.DataFrame(flat_list2)    
+
+    return df
+
+
 
 def shop_rating(moods):
     """
@@ -74,6 +92,20 @@ def shop_rating(moods):
                     flat_list2 = [item for sublist in lista_ratings for item in sublist]
                     ratings_df = pd.DataFrame(flat_list2)
                     rate_df = ratings_df.drop_duplicates(subset="product")
-
+                    rate_df['rating']= pd.to_numeric(rate_df['rating'], downcast="float")
     return rate_df
+
+
+def merging_shop_rating(moods):
+    """
+    Esta funcion me devuelve un df de df shop_ratings + shoop_moods + cbd description
+    """
+    df1 = pd.DataFrame(shop_mood(moods))
+    df2 = shop_rating(moods)
+    df3 = mood_description(moods)
+    ttal = df1.merge(df2,on='product').merge(df3,on='product')
+    df = ttal.drop_duplicates(subset=['product','price', 'CBD percentage'], keep='last')
+         
+        
+    return df
 
