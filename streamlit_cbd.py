@@ -9,12 +9,12 @@ from PIL import Image
 import altair as alt
 import plotly.express as px
 imagen = Image.open("images/imagen_header.jpg")
-st.image(imagen)
+st.image(imagen, width=600)
 
 
 
 st.write("""
-# Mad-Green
+# 🍁 Trip-Advisor-Madrid 🍁
 **Tu comparador de precios de CBD en Madrid**
 """)
 
@@ -35,8 +35,13 @@ agree = st.button("Haz click aquí para ver las opiniones de estos buds")
 if agree:
     df = shop_rating(selected_mood)
     fig = px.bar(df, x="product", y="rating", color="product", title=f"Los mejores tipos de CBD para sentirte {selected_mood} según nuestros usuarios:")
-    fig.show() #grafico se me repite 
+    fig.show()  
 
+    
+search_query = st.sidebar.text_input("Search")
+
+
+user_review = st.text_input("Añade tu comentario:")
 
 
 
