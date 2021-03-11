@@ -96,7 +96,7 @@ def mood_description(moods):
     lista_description = []
     for shops in flat_list1:
         qu = {"product":shops["product"]}
-        pro = {"_id": 0, "product":1, "description":1}
+        pro = {"_id": 0, "product":1, "description":1, "flavor":1}
         if check_exists(qu, "cbd_info"):
                     lista_description.append( read_coll("cbd_info",qu, pro))
                     flat_list2 = [item for sublist in lista_description for item in sublist]

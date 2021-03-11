@@ -46,12 +46,15 @@ final_product_website = list(df["shop"].loc[(df["product"] == make_choice) & (df
 final_product_rating = list(df["rating"].loc[(df["product"] == make_choice) & (df["CBD percentage"]== cbd_choice)])
 
 origen_cbd = list(df["description"].loc[(df["product"] == make_choice) & (df["CBD percentage"]== cbd_choice)])
+
+sabor_cbd = list(df["flavor"].loc[(df["product"] == make_choice) & (df["CBD percentage"]== cbd_choice)])
     
-st.write(f"#### El {make_choice} tiene un rating de {final_product_rating[0]}")
+st.write(f"#### El {make_choice} tiene un rating de {final_product_rating[0]} segun nuestros usuarios. Con un sabor inconfundible a {sabor_cbd[0]}")
+
 
 st.write(f"""### Orígenes del CBD {make_choice}:
 {origen_cbd[0]} 
-Por {price_choice} y con {cbd_choice} de CBD, lo puedes comprar **aquí**: 
+Por **{price_choice}** y con **{cbd_choice} de CBD**, lo puedes comprar **aquí**: 
                 
 {final_product_website[0]}""")
 

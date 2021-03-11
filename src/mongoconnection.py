@@ -4,15 +4,16 @@ from dotenv import load_dotenv
 import os
 
 
-dburl = os.getenv("dburl")
+#dburl = os.getenv("dburl")
 """
-client = MongoClient()
-db = client.mad_green
+client = MongoClient(dburl)
+db = client.get_database()
 """
 
 #dburl ="mongodb+srv://xarlomi:car99pg611@clustermadgreen.es0ot.mongodb.net/mad_green?retryWrites=true&w=majority"
-client = MongoClient(dburl)
-db = client.get_database()
+
+client = MongoClient()
+db = client.mad_green
 
 def read_coll(collection,query,project,  client=client):
     res = db[collection].find(query,  project)
