@@ -17,10 +17,11 @@ For this reason, my aim in this project is to:
 
 -create a community of CBD lovers in which they all share their reviews of a given CBD bud from a given shop recommended.
 
+
 ### Work done:
 #### -Created a MongoDB with 4 collections: 
 
-   -One containing CBD strains, effects and flavors. Which is a [Kaggle Dataset]("https://www.kaggle.com/kingburrito666/cannabis-strains")
+   -One containing CBD strains, effects and flavors. Which is a [Kaggle Dataset](https://www.kaggle.com/kingburrito666/cannabis-strains)
     
    -Second one with the ratings of the CBD strains from that Kaggle Dataset as well.
     
@@ -28,19 +29,25 @@ For this reason, my aim in this project is to:
    
    -Fourth collection was implement for the user to write reviews about the products recommended
 
-#### Streamlit:
+#### -Used Streamlit:
 Rather than creating an API I wanted my data to be more visual
 
-#### Deployed on Heroku:
+#### -Deployed on Heroku:
 Although the website has already been created, data is not showing as there are some problems which will get shortly fixed.
 
+
 ### Libraries Used:
-[Pandas]("https://pandas.pydata.org/")
-[Selenium]("https://selenium-python.readthedocs.io/")
-[Streamlit]("https://streamlit.io/")
-[Matplotlib]("https://matplotlib.org/stable/contents.html")
-[os]("https://docs.python.org/3/library/os.html")
-[Seaborn]("https://seaborn.pydata.org/")
+[Pandas](https://pandas.pydata.org/)
+
+[Selenium](https://selenium-python.readthedocs.io/)
+
+[Streamlit](https://streamlit.io/)
+
+[Matplotlib](https://matplotlib.org/stable/contents.html)
+
+[os](https://docs.python.org/3/library/os.html)
+
+[Seaborn](https://seaborn.pydata.org/)
 
 
 
