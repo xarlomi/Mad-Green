@@ -27,15 +27,8 @@ Fíltremos la búsqueda para encontrar tu match ideal: """)
 
 
 st.write(f"### Aqui puedes encontrar dónde comprar {len(shop_mood(selected_mood))}  tipos de CBD que te hacen sentirte {selected_mood}:")
-st.dataframe(merging_shop_rating(selected_mood))
+st.dataframe(main_shop_mood(selected_mood))
 
-st.write("""### ¿Todavía no sabes con cuál quedarte? 
-**Déjate guiar por nuestros queridos usuarios... 🧙‍♂️:**""")
-agree = st.button("Haz click aquí para ver las opiniones de estos buds")
-if agree:
-    df2 = shop_rating(selected_mood)
-    fig = px.bar(df, x="product", y="rating", color="product", title=f"Los mejores tipos de CBD para sentirte {selected_mood} según nuestros usuarios:")
-    fig.show()  
 
 df = merging_shop_rating(selected_mood)    
 makes = list(df['product'].drop_duplicates())
@@ -47,10 +40,30 @@ cbd_choice = st.sidebar.selectbox('Ahora elige % de CBD:', cbd_per)
 prices = list(df["price"].loc[(df["product"] == make_choice) & (df["CBD percentage"]== cbd_choice)])
 price_choice = st.sidebar.selectbox('Ahora por precio:', prices)
 
+#aqui devolvemos el website del producto post-filtro elegido para que pueda comprarlo
+final_product_website = list(df["shop"].loc[(df["product"] == make_choice) & (df["CBD percentage"]== cbd_choice)])
+
+final_product_rating = list(df["rating"].loc[(df["product"] == make_choice) & (df["CBD percentage"]== cbd_choice)])
+
+origen_cbd = list(df["description"].loc[(df["product"] == make_choice) & (df["CBD percentage"]== cbd_choice)])
+    
+st.write(f"El CBD {make_choice} tiene un rating de {final_product_rating[0]} \n. Sus orígenes son {origen_cbd[0]} \n. Compralo por {price_choice} y con {cbd_choice} de CBD aqui: {final_product_website[0]}")
 
 
 user_review = st.text_input("Añade tu comentario:")
+if user_review:
+    add_review(final_product_website[0], user_review)
 
+read_reviews(final_product_website[0])
+
+st.write("""### ¿Todavía no sabes con cuál quedarte? 
+**Déjate guiar por nuestros queridos usuarios... 🧙‍♂️:**""")
+agree = st.button("Haz click aquí para ver las opiniones de estos buds")
+if agree:
+    df2 = shop_rating(selected_mood)
+    fig = px.bar(df2, x="product", y="rating", color="product", title=f"Los mejores tipos de CBD para sentirte {selected_mood} según nuestros usuarios:")
+    fig.show() 
+    
 
 
 

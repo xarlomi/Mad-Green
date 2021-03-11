@@ -39,7 +39,32 @@ def count_cbd_mood(mood):
     return moods
 
 
+def main_shop_mood(moods):
+    """
+    This queries one collection to another and returns a DF with the 
+    available CBD product given the mood chosen by user. Without website. 
+    Main DF used in streamlit
+    """
+    
+   #querying the KAGGLE dataset
+    filt = {"mood":{"$regex":f"{moods}"}}
+    project = {"_id":0, "product":1}
+    result = db.cbd_info.find(filt, project)
+    results= list(result)
+    
+    #querying the SCRAPPED dataset
+    lista_res = []
+    for i in results:
+        q = {"product":i["product"]}
+        pro = {"_id":0, "shop":0} 
+        if check_exists(q, "cbd_shops"):
+            lista_res.append(read_coll("cbd_shops",q,  pro))
+            flat_list = [item for sublist in lista_res for item in sublist]
+            df = pd.DataFrame(flat_list)
 
+    return df
+    
+    
 def shop_mood(moods):
     """
     Esta funcion devuelve los productos que puede comprar el usuario (col2, q2) en funcion del mood que haya elegido (col1, q1)
@@ -55,18 +80,18 @@ def shop_mood(moods):
         pro = {"_id":0} 
         if check_exists(q, "cbd_shops"):
             lista_res.append(read_coll("cbd_shops",q,  pro))
-            flat_list = [item for sublist in lista_res for item in sublist]
+            flat_lists = [item for sublist in lista_res for item in sublist]
             
-    return flat_list
+    return flat_lists
 
 def mood_description(moods):
     """
     This queries one collection to another and returns a DF with the 
-    available CBD product given the mood chosen by user
+    description of CBD product given the mood chosen by user
     """
-    flat_list = shop_mood(moods)
+    flat_list1 = shop_mood(moods)
     lista_description = []
-    for shops in flat_list:
+    for shops in flat_list1:
         qu = {"product":shops["product"]}
         pro = {"_id": 0, "product":1, "description":1}
         if check_exists(qu, "cbd_info"):
@@ -92,7 +117,8 @@ def shop_rating(moods):
                     flat_list2 = [item for sublist in lista_ratings for item in sublist]
                     ratings_df = pd.DataFrame(flat_list2)
                     rate_df = ratings_df.drop_duplicates(subset="product")
-                    rate_df['rating']= pd.to_numeric(rate_df['rating'], downcast="float")
+                    rate_df['rating']= round(rate_df['rating'], 2)
+                    
     return rate_df
 
 
@@ -103,9 +129,31 @@ def merging_shop_rating(moods):
     df1 = pd.DataFrame(shop_mood(moods))
     df2 = shop_rating(moods)
     df3 = mood_description(moods)
-    ttal = df1.merge(df2,on='product').merge(df3,on='product')
+    ttal =  df1.merge(df2,on='product').merge(df3,on='product')
     df = ttal.drop_duplicates(subset=['product','price', 'CBD percentage'], keep='last')
          
         
     return df
 
+def add_review(web, rev):
+    filt = {"shop":{"$regex":f"{web}"}}
+    project = {"_id":1, "product":0, "CBD percentage":0, "price":0}
+    result = db.cbd_shops.find(filt, project)
+    results= list(result)
+    id_review = {}
+    q = {"review": rev}
+    results.append(q)
+        
+    for x in results:
+           id_review.update(x)
+    id_review["shop_id"] = id_review.pop("_id")
+    
+    return write_coll("db.cbd_product_review", id_review)
+
+def read_reviews(web):
+    filt = {"shop":{"$regex":f"{web}"}}
+    project = {"_id":0, "shop_id":0, "shop":0}
+    result = db.db.cbd_product_review.find(filt, project)
+    results= list(result)
+
+    return results
