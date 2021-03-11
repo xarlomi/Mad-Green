@@ -1,9 +1,15 @@
 from pymongo import MongoClient
+from dotenv import load_dotenv
+import os
+
+
+dburl = os.getenv("dburl")
 """
 client = MongoClient()
 db = client.mad_green
 """
-dburl ="mongodb+srv://xarlomi:car99pg611@clustermadgreen.es0ot.mongodb.net/mad_green?retryWrites=true&w=majority"
+
+#dburl ="mongodb+srv://xarlomi:car99pg611@clustermadgreen.es0ot.mongodb.net/mad_green?retryWrites=true&w=majority"
 client = MongoClient(dburl)
 db = client.get_database()
 
