@@ -47,10 +47,16 @@ final_product_rating = list(df["rating"].loc[(df["product"] == make_choice) & (d
 
 origen_cbd = list(df["description"].loc[(df["product"] == make_choice) & (df["CBD percentage"]== cbd_choice)])
     
-st.write(f"El CBD {make_choice} tiene un rating de {final_product_rating[0]} \n. Sus orígenes son {origen_cbd[0]} \n. Compralo por {price_choice} y con {cbd_choice} de CBD aqui: {final_product_website[0]}")
+st.write(f"#### El {make_choice} tiene un rating de {final_product_rating[0]}")
 
+st.write(f"""### Orígenes del CBD {make_choice}:
+{origen_cbd[0]} 
+Por {price_choice} y con {cbd_choice} de CBD, lo puedes comprar **aquí**: 
+                
+{final_product_website[0]}""")
 
-user_review = st.text_input("Añade tu comentario:")
+st.write(f"#### Cuéntanos que te ha parecido el CBD {make_choice}")
+user_review = st.text_input("Déjanos tu comentario aquí:")
 if user_review:
     add_review(final_product_website[0], user_review)
 
