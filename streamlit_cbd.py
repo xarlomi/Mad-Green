@@ -38,7 +38,7 @@ cbd_per = list(df["CBD percentage"].loc[df["product"] == make_choice])
 cbd_choice = st.sidebar.selectbox('Ahora elige % de CBD:', cbd_per)
 
 prices = list(df["price"].loc[(df["product"] == make_choice) & (df["CBD percentage"]== cbd_choice)])
-price_choice = st.sidebar.selectbox('Ahora por precio:', prices)
+price_choice = st.sidebar.selectbox('Dentro precio:', prices)
 
 #aqui devolvemos el website del producto post-filtro elegido para que pueda comprarlo
 final_product_website = list(df["shop"].loc[(df["product"] == make_choice) & (df["CBD percentage"]== cbd_choice)])
@@ -55,12 +55,12 @@ Por {price_choice} y con {cbd_choice} de CBD, lo puedes comprar **aquí**:
                 
 {final_product_website[0]}""")
 
-st.write(f"#### Cuéntanos que te ha parecido el CBD {make_choice}")
+st.write(f"#### Cuéntanos qué te ha parecido el CBD {make_choice}")
 user_review = st.text_input("Déjanos tu comentario aquí:")
 if user_review:
     add_review(final_product_website[0], user_review)
 
-read_reviews(final_product_website[0])
+st.write(f"Esto es lo que piensan otros usuarios del {make_choice} {read_reviews(final_product_website[0])}")
 
 st.write("""### ¿Todavía no sabes con cuál quedarte? 
 **Déjate guiar por nuestros queridos usuarios... 🧙‍♂️:**""")

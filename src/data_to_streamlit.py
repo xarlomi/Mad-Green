@@ -7,6 +7,9 @@ import pandas as pd
 
 
 def carga_data():
+    """
+    Accessing directly the CSV from Kaggle with CBD info. The rest are MongoDB queries only
+    """
     data = pd.read_csv("data/cbd_info2.csv")
     return data
 
@@ -14,7 +17,7 @@ def carga_data():
 
 def mood_list():
     """
-    Returns a list with all the moods that CBD makes you feel (col1)
+    Returns a list with all the moods that CBD makes you feel (col1). Only function employing directly the CSV. The rest are MongoDB queries only
     """
     dat = carga_data()
     a = dat.Effects.unique()
